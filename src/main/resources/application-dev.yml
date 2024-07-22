@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: admin
+    password: 123
   jpa:
     open-in-view: false
     hibernate:
@@ -13,3 +13,9 @@ spring:
         format_sql: true
 server:
   port: 8080
+
+jwt:
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key
