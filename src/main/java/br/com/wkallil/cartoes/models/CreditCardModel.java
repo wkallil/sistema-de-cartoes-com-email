@@ -1,24 +1,37 @@
 package br.com.wkallil.cartoes.models;
 
-import br.com.wkallil.cartoes.utils.Card;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-public class CreditCardModel extends Card {
-    private double limit;
-    private double balance;
+import java.time.LocalDate;
 
-    public double getLimit() {
-        return limit;
+@Entity
+@DiscriminatorValue("CREDIT_CARD")
+public class CreditCardModel extends CardModel {
+    private double creditLimit;
+
+
+    @Override
+    public void performTransaction(double amount) {
+        if (isExpired()) {
+            throw new IllegalArgumentException("Card is expired");
+        }
+        if (getBalance() + amount <= creditLimit) {
+            setBalance(getBalance() + amount);
+        } else {
+            throw new IllegalArgumentException("Exceeds credit limit");
+        }
     }
 
-    public void setLimit(double limit) {
-        this.limit = limit;
+    private boolean isExpired() {
+        return LocalDate.now().isAfter(getExpirationDate());
     }
 
-    public double getBalance() {
-        return balance;
+    public double getCreditLimit() {
+        return creditLimit;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setCreditLimit(double creditLimit) {
+        this.creditLimit = creditLimit;
     }
 }

@@ -1,12 +1,8 @@
 package br.com.wkallil.cartoes.models;
 
-
 import br.com.wkallil.cartoes.dtos.LoginRequestDto;
-import br.com.wkallil.cartoes.utils.Card;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Set;
@@ -19,26 +15,25 @@ public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "USER_ID")
-    @NotBlank
     private UUID userID;
-    @NotBlank
+
+
     private String name;
-    @NotBlank
-    private String cpf;
-    @NotBlank
+
     private String username;
-    @NotBlank
+
+
     private String password;
-    @Email
-    @Column(unique = true)
-    @NotBlank
+
+    @Column(nullable = false, unique = true)
     private String email;
-    @NotBlank
+
     private String cep;
 
-    @OneToMany
-    @JoinColumn(name = "USER_ID")
-    private Set<Card> cards;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<CardModel> cards;
+
 
     // Getters and Setters
 
@@ -90,15 +85,17 @@ public class UserModel {
         this.cep = cep;
     }
 
-    public Set<Card> getCards() {
+    public Set<CardModel> getCards() {
         return cards;
     }
 
-    public void setCards(Set<Card> cards) {
+    public void setCards(Set<CardModel> cards) {
         this.cards = cards;
     }
 
     public boolean isLoginCorrect(LoginRequestDto loginRequestDto, BCryptPasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(loginRequestDto.password(), this.password);
     }
+
+
 }
