@@ -9,23 +9,7 @@ import java.time.LocalDate;
 @DiscriminatorValue("CREDIT_CARD")
 public class CreditCardModel extends CardModel {
     private double creditLimit;
-
-
-    @Override
-    public void performTransaction(double amount) {
-        if (isExpired()) {
-            throw new IllegalArgumentException("Card is expired");
-        }
-        if (getBalance() + amount <= creditLimit) {
-            setBalance(getBalance() + amount);
-        } else {
-            throw new IllegalArgumentException("Exceeds credit limit");
-        }
-    }
-
-    private boolean isExpired() {
-        return LocalDate.now().isAfter(getExpirationDate());
-    }
+    private double balance;
 
     public double getCreditLimit() {
         return creditLimit;
@@ -33,5 +17,13 @@ public class CreditCardModel extends CardModel {
 
     public void setCreditLimit(double creditLimit) {
         this.creditLimit = creditLimit;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

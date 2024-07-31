@@ -1,5 +1,6 @@
 package br.com.wkallil.cartoes.models;
 
+import br.com.wkallil.cartoes.dtos.TransactionDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -17,20 +18,16 @@ public abstract class CardModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID cardId;
 
-
-    private String cardNumber;
-
-
-    private LocalDate expirationDate;
-
-    private double balance;
-
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
     private UserModel user;
 
-    public abstract void performTransaction(double amount);
+    private String cardNumber;
+
+    private LocalDate expirationDate;
+
+    private String cvv;
 
     public UUID getCardId() {
         return cardId;
@@ -38,6 +35,14 @@ public abstract class CardModel {
 
     public void setCardId(UUID cardId) {
         this.cardId = cardId;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 
     public String getCardNumber() {
@@ -56,19 +61,11 @@ public abstract class CardModel {
         this.expirationDate = expirationDate;
     }
 
-    public double getBalance() {
-        return balance;
+    public String getCvv() {
+        return cvv;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 }

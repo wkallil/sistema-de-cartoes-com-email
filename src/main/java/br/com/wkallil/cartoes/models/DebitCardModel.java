@@ -10,22 +10,13 @@ import java.time.LocalDate;
 @DiscriminatorValue("DEBIT")
 public class DebitCardModel extends CardModel {
 
+    private double balance = 0.0;
 
-    @Override
-    public void performTransaction(double amount) {
-        if (isExpired()) {
-            throw new IllegalStateException("Card is expired");
-        }
-       if(amount <= getBalance()) {
-           setBalance(getBalance() - amount);
-       } else {
-           throw new IllegalArgumentException("Insufficient balance");
-       }
+    public double getBalance() {
+        return balance;
     }
 
-    private boolean isExpired() {
-        return LocalDate.now().isAfter(getExpirationDate());
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
-
-
 }

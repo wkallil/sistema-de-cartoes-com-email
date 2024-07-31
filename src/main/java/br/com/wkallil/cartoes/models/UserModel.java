@@ -1,10 +1,12 @@
 package br.com.wkallil.cartoes.models;
 
 import br.com.wkallil.cartoes.dtos.LoginRequestDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,7 +34,8 @@ public class UserModel {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
-    private Set<CardModel> cards;
+    @JsonIgnore
+    private Set<CardModel> cards = new HashSet<>();
 
 
     // Getters and Setters
